@@ -1,21 +1,23 @@
 package org.freeBoard.domain;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.Data;
 
 @Data
 public class BoardVO {
+	
+	// 게시판 종류
+	private Long bType;
 
+	// 게시글 넘버
 	private Long bno;
-	private String title;
-	private String content;
-	private String writer;
-	private Date regdate;
-	private Date updateDate;
-
-	private int replyCnt;
-
-	private List<BoardAttachVO> attachList;
+	
+	public String title;
+	public String content;
+	public String writer;
+	
+	public Date regDate;
+	public Date updateDate;
+	
 }
