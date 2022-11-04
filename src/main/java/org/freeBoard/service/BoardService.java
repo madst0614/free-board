@@ -1,6 +1,9 @@
 package org.freeBoard.service;
 
+import java.util.List;
+
 import org.freeBoard.domain.BoardVO;
+import org.freeBoard.domain.Criteria;
 
 public interface BoardService {
 
@@ -11,6 +14,9 @@ public interface BoardService {
 	public boolean modify(BoardVO board);
 
 	public boolean remove(Long bno);
-	
+
 	public int getTotal(Criteria cri);
+
+	public List<BoardVO> getList(Criteria cri);
+
 }
