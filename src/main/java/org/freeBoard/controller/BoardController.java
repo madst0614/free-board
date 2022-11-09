@@ -15,8 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Controller
-@RequestMapping("/board/*")
 @Log4j2
+@RequestMapping("/board/*")
 @AllArgsConstructor
 public class BoardController {
 	private BoardService service;
@@ -32,9 +32,16 @@ public class BoardController {
 		log.info("page total: " + total);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 	}
-	
+
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
+
+		log.info("register: " + board);
+
+		service.register(board);
 		
+		rttr.addFlashAttribute("result", board.getBno());
+
+		return "redirect:/board/list";
 	}
 }

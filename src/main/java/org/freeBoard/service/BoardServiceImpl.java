@@ -5,6 +5,7 @@ import java.util.List;
 import org.freeBoard.domain.BoardVO;
 import org.freeBoard.domain.Criteria;
 import org.freeBoard.mapper.BoardMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-	@Setter
+	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
 
 	@Transactional
