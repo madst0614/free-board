@@ -1,5 +1,7 @@
 package org.freeBoard.controller;
 
+import java.util.List;
+
 import org.freeBoard.domain.BoardVO;
 import org.freeBoard.domain.Criteria;
 import org.freeBoard.domain.PageDTO;
@@ -66,6 +68,18 @@ public class BoardController {
 
 		if (service.modify(board)) {
 
+			rttr.addFlashAttribute("result", "success");
+		}
+
+		return "redirect:/board/list" + cri.getListLink();
+	}
+	@PostMapping("/remove")
+	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
+
+		log.info("remove....." + bno);
+
+		if (service.remove(bno)) {
+			
 			rttr.addFlashAttribute("result", "success");
 		}
 
