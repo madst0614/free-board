@@ -43,7 +43,7 @@
 				<button data-oper='modify' class="btn btn-default">Modify</button>
 				<button data-oper='list' class="btn btn-info">List</button>
 
-				<form id='operForm' method="get">
+				<form id='operForm' action="/board/modify" method="get">
 					<input type='hidden' id='bno' name='bno'
 						value='<c:out value="${board.bno }"/>'> <input
 						type='hidden' name='pageNum'
@@ -198,25 +198,8 @@
 </div>
 <!-- /.modal -->
 
-<!-- modfiy, list 버튼 -->
-<script type="text/javascript">
-	$(document).ready(function() {
-		var operForm = $("#operForm");
+<script type="text/javascript" src="/resources/js/reply.js"></script>
 
-		$("button[data-oper='modify']").on("click", function(e) {
-			operForm.attr("action", "/board/modify").submit();
-		});
-
-		$("button[data-oper='list']").on("click", function(e) {
-			operForm.find("#bno").remove();
-			operForm.attr("action", "/board/list")
-			operForm.submit();
-		});
-	});
-</script>
-
-
-<%@include file="../includes/footer.jsp"%>
 <script>
 	$(document)
 			.ready(
@@ -392,10 +375,12 @@
 						modalRemoveBtn.on("click", function(e) {
 
 							var rno = modal.data("rno");
+							var replyer = modalInputReplyer.val();
 
-							replyService.remove(rno, function(result) {
+							replyService.remove(rno, replyer,  function(result) {
 
 								alert(result);
+								console.log(result);
 								modal.modal("hide");
 								showList(pageNum);
 							});
@@ -443,118 +428,26 @@
 																		.modal(
 																				"show");
 															});
-											});
+										});
 
 					});
 </script>
 
-<!-- getAttachList -->
-<script>
-	$(document)
-			.ready(
-					function() {
-						(function() {
+<script type="text/javascript">
+	$(document).ready(function() {
+		var operForm = $("#operForm");
 
-							var bno = '<c:out value="${board.bno}"/>';
+		$("button[data-oper='modify']").on("click", function(e) {
+			operForm.attr("action", "/board/modify").submit();
+		});
 
-							$
-									.getJSON(
-											"/board/getAttachList",
-											{
-												bno : bno
-											},
-											function(arr) {
-
-												console.log(arr);
-
-												var str = "";
-												$(arr)
-														.each(
-																function(i,
-																		attach) {
-
-																	//image type
-																	if (attach.fileType) {
-																		var fileCallPath = encodeURIComponent(attach.uploadPath
-																				+ "/s_"
-																				+ attach.uuid
-																				+ "_"
-																				+ attach.fileName);
-
-																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-																		str += "<img src='/display?fileName="
-																				+ fileCallPath
-																				+ "'>";
-																		str += "</div>";
-																		str += "</li>";
-																	} else {
-																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-																		str += "<span> "
-																				+ attach.fileName
-																				+ "</span><br/>";
-																		str += "<img src='/resources/img/attach.png'>";
-																		str += "</div>";
-																		str += "</li>";
-																	}
-																});
-
-												$(".uploadResult ul").html(str);
-											}); //end getjson
-
-						})(); //end function
-
-						$(".uploadResult").on(
-								"click",
-								"li",
-								function(e) {
-
-									console.log("view image");
-
-									var liObj = $(this);
-
-									var path = encodeURIComponent(liObj
-											.data("path")
-											+ "/"
-											+ liObj.data("uuid")
-											+ "_"
-											+ liObj.data("filename"));
-
-									if (liObj.data("type")) {
-										showImage(path.replace(
-												new RegExp(/\\/g), "/"));
-									} else {
-										//download
-										self.location = "/download?fileName="
-												+ path;
-									}
-								})
-
-						// 첨부파일 클릭 시 원본 이미지
-						function showImage(fileCallPath) {
-
-							alert(fileCallPath);
-
-							$(".bigPictureWrapper").css("display", "flex")
-									.show();
-
-							$(".bigPicture").html(
-									"<img src='/display?fileName="
-											+ fileCallPath + "'>").animate({
-								width : '100%',
-								height : '100%'
-							}, 1000);
-
-						}
-
-						// 원본 이미지 창 닫기
-						$(".bigPictureWrapper").on("click", function(e) {
-							$(".bigPicture").animate({
-								width : '0%',
-								height : '0%'
-							}, 1000);
-							setTimeout(function() {
-								$('.bigPictureWrapper').hide();
-							}, 1000);
-						});
-					});
+		$("button[data-oper='list']").on("click", function(e) {
+			operForm.find("#bno").remove();
+			operForm.attr("action", "/board/list")
+			operForm.submit();
+		});
+	});
 </script>
+
+
+<%@include file="../includes/footer.jsp"%>

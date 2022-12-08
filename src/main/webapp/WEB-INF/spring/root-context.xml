@@ -56,5 +56,6 @@
 
 	<context:component-scan
 		base-package="org.freeBoard.task"></context:component-scan>
-
+		
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 </beans>

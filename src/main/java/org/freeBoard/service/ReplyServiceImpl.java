@@ -54,6 +54,8 @@ public class ReplyServiceImpl implements ReplyService {
 	public int remove(Long rno) {
 		// TODO Auto-generated method stub
 		
+		log.info("remove(impl) : " + rno);
+		
 		ReplyVO vo = mapper.read(rno);
 		boardMapper.updateReplyCnt(vo.getBno(), -1);
 		

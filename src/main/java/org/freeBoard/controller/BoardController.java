@@ -1,7 +1,5 @@
 package org.freeBoard.controller;
 
-import java.util.List;
-
 import org.freeBoard.domain.BoardVO;
 import org.freeBoard.domain.Criteria;
 import org.freeBoard.domain.PageDTO;

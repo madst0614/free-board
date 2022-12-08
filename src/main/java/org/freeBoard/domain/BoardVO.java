@@ -20,4 +20,5 @@ public class BoardVO {
 	public Date regDate;
 	public Date updateDate;
 	
+	private int replyCnt;
 }
