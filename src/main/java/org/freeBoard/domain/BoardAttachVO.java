@@ -3,10 +3,11 @@ package org.freeBoard.domain;
 import lombok.Data;
 
 @Data
-public class AttachFileDTO {
-	
+public class BoardAttachVO {
 	private String uuid;
-	private String fileName;
-	private boolean image;
 	private String uploadPath;
+	private String fileName;
+	private boolean fileType;
+
+	private Long bno;
 }

@@ -2,8 +2,10 @@ package org.freeBoard.service;
 
 import java.util.List;
 
+import org.freeBoard.domain.BoardAttachVO;
 import org.freeBoard.domain.BoardVO;
 import org.freeBoard.domain.Criteria;
+import org.freeBoard.mapper.BoardAttachMapper;
 import org.freeBoard.mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class BoardServiceImpl implements BoardService {
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
 
+	@Setter(onMethod_ = @Autowired)
+	private BoardAttachMapper attachMapper;
+
 	@Transactional
 	@Override
 	public void register(BoardVO board) {
@@ -28,6 +33,17 @@ public class BoardServiceImpl implements BoardService {
 		log.info("register" + board);
 
 		mapper.insertSelectKey(board);
+
+		if (board.getAttachList() == null || board.getAttachList().size() <= 0) {
+			return;
+		}
+
+		board.getAttachList().forEach(attach -> {
+			attach.setBno(board.getBno());
+			attachMapper.insert(attach);
+
+			log.info("insert attach to " + attach.getBno());
+		});
 	}
 
 	public BoardVO get(Long bno) {
@@ -43,7 +59,16 @@ public class BoardServiceImpl implements BoardService {
 
 		log.info("modify" + board);
 
+		attachMapper.deleteAll(board.getBno());
+
 		boolean modifyResult = mapper.update(board) == 1;
+
+		if (modifyResult && board.getAttachList() != null && board.getAttachList().size() > 0) {
+			board.getAttachList().forEach(attach -> {
+				attach.setBno(board.getBno());
+				attachMapper.insert(attach);
+			});
+		}
 
 		return modifyResult;
 	}
@@ -52,19 +77,27 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean remove(Long bno) {
 		log.info("remove" + bno);
+		
+		attachMapper.deleteAll(bno);
 
 		return mapper.delete(bno) == 1;
 	}
 
 	public int getTotal(Criteria cri) {
 		log.info("get total count");
-		
+
 		return mapper.getTotalCount(cri);
 	}
 
 	public List<BoardVO> getList(Criteria cri) {
 		log.info("get List with Criteria " + cri);
-		
+
 		return mapper.getListWithPaging(cri);
+	}
+
+	@Override
+	public List<BoardAttachVO> getAttachList(Long bno) {
+		// TODO Auto-generated method stub
+		return attachMapper.findByBno(bno);
 	}
 }

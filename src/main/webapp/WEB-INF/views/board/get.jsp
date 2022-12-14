@@ -433,6 +433,117 @@
 					});
 </script>
 
+<!-- getAttachList -->
+<script>
+	$(document)
+			.ready(
+					function() {
+						(function() {
+
+							var bno = '<c:out value="${board.bno}"/>';
+
+							$
+									.getJSON(
+											"/board/getAttachList",
+											{
+												bno : bno
+											},
+											function(arr) {
+
+												console.log(arr);
+
+												var str = "";
+												$(arr)
+														.each(
+																function(i,
+																		attach) {
+
+																	//image type
+																	if (attach.fileType) {
+																		var fileCallPath = encodeURIComponent(attach.uploadPath
+																				+ "/s_"
+																				+ attach.uuid
+																				+ "_"
+																				+ attach.fileName);
+
+																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
+																		str += "<img src='/display?fileName="
+																				+ fileCallPath
+																				+ "'>";
+																		str += "</div>";
+																		str += "</li>";
+																	} else {
+																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
+																		str += "<span> "
+																				+ attach.fileName
+																				+ "</span><br/>";
+																		str += "<img src='/resources/img/attach.png'>";
+																		str += "</div>";
+																		str += "</li>";
+																	}
+																});
+
+												$(".uploadResult ul").html(str);
+											}); //end getjson
+
+						})(); //end function
+
+						$(".uploadResult").on(
+								"click",
+								"li",
+								function(e) {
+
+									console.log("view image");
+
+									var liObj = $(this);
+
+									var path = encodeURIComponent(liObj
+											.data("path")
+											+ "/"
+											+ liObj.data("uuid")
+											+ "_"
+											+ liObj.data("filename"));
+
+									if (liObj.data("type")) {
+										showImage(path.replace(
+												new RegExp(/\\/g), "/"));
+									} else {
+										//download
+										self.location = "/download?fileName="
+												+ path;
+									}
+								})
+
+						// 첨부파일 클릭 시 원본 이미지
+						function showImage(fileCallPath) {
+
+							alert(fileCallPath);
+
+							$(".bigPictureWrapper").css("display", "flex")
+									.show();
+
+							$(".bigPicture").html(
+									"<img src='/display?fileName="
+											+ fileCallPath + "'>").animate({
+								width : '100%',
+								height : '100%'
+							}, 1000);
+
+						}
+
+						// 원본 이미지 창 닫기
+						$(".bigPictureWrapper").on("click", function(e) {
+							$(".bigPicture").animate({
+								width : '0%',
+								height : '0%'
+							}, 1000);
+							setTimeout(function() {
+								$('.bigPictureWrapper').hide();
+							}, 1000);
+						});
+					});
+</script>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		var operForm = $("#operForm");
@@ -446,6 +557,8 @@
 			operForm.attr("action", "/board/list")
 			operForm.submit();
 		});
+		
+		
 	});
 </script>
 

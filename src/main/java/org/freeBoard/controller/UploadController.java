@@ -34,7 +34,7 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Controller
 @Log4j2
 public class UploadController {
-
+	
 	private String getFolderName() {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -57,7 +57,7 @@ public class UploadController {
 
 		return false;
 	}
-
+	
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
