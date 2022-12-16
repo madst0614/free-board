@@ -139,6 +139,16 @@
 </div>
 <!-- /.row -->
 
+<form id='actionForm' action="/board/list" method='get'>
+	<input type='hidden' name='bno' value="-1"/>
+	<input type='hidden' name='pageNum' value='${pageMaker.criteria.pageNum }'>
+	<input type='hidden' name='amount' value='${pageMaker.criteria.amount }'>
+	<input type='hidden' name='type'
+		value='<c:out value="${ pageMaker.criteria.type }"/>'> <input
+		type='hidden' name='keyword'
+		value='<c:out value="${ pageMaker.criteria.keyword }"/>'>
+</form>
+
 <%@include file="../includes/footer.jsp"%>
 
 <script type="text/javascript">
@@ -169,14 +179,6 @@
 			});
 </script>
 
-<form id='actionForm' action="/board/list" method='get'>
-	<input type='hidden' name='pageNum' value='${pageMaker.criteria.pageNum }'>
-	<input type='hidden' name='amount' value='${pageMaker.criteria.amount }'>
-	<input type='hidden' name='type'
-		value='<c:out value="${ pageMaker.criteria.type }"/>'> <input
-		type='hidden' name='keyword'
-		value='<c:out value="${ pageMaker.criteria.keyword }"/>'>
-</form>
 
 <script type="text/javascript">
 	$(document)
@@ -216,6 +218,8 @@
 
 									actionForm.find("input[name='pageNum']")
 											.val($(this).attr("href"));
+									actionForm.attr("action",
+									"/board/list");
 									actionForm.submit();
 								});
 
@@ -224,11 +228,11 @@
 										"click",
 										function(e) {
 											e.preventDefault();
-											actionForm
-													.append("<input type = 'hidden' name='bno' value='"
-															+ $(this).attr(
-																	"href")
-															+ "'>");
+											
+											var actionForm = $("#actionForm");
+											
+											actionForm.find("input[name='bno']")
+											.val($(this).attr("href"));
 											actionForm.attr("action",
 													"/board/get");
 											actionForm.submit();

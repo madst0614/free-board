@@ -66,7 +66,7 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	@GetMapping(value = { "/get", "/modify" }, consumes = "application/json")
+	@GetMapping(value = { "/get", "/modify" })
 	public void get(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, Model model) {
 
 		log.info("/get or /modify");
