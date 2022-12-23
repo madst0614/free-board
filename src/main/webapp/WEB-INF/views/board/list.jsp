@@ -7,7 +7,7 @@
 <%@include file="../includes/header.jsp"%>
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">Tables</h1>
+		<h1 class="page-header">자유 게시판</h1>
 	</div>
 	<!-- /.col-lg-12 -->
 </div>
@@ -95,7 +95,8 @@
 
 						<c:forEach var="num" begin="${pageMaker.start}"
 							end="${pageMaker.end}">
-							<li class="paginate_button ${pageMaker.criteria.pageNum == num ? "active":""} ">
+							<li
+								class="paginate_button ${pageMaker.criteria.pageNum == num ? "active":""} ">
 								<a href="${num}">${num}</a>
 							</li>
 						</c:forEach>
@@ -140,13 +141,14 @@
 <!-- /.row -->
 
 <form id='actionForm' action="/board/list" method='get'>
-	<input type='hidden' name='bno' value="-1"/>
-	<input type='hidden' name='pageNum' value='${pageMaker.criteria.pageNum }'>
-	<input type='hidden' name='amount' value='${pageMaker.criteria.amount }'>
-	<input type='hidden' name='type'
+	<input type='hidden' name='pageNum'
+		value='${pageMaker.criteria.pageNum }'> <input type='hidden'
+		name='amount' value='${pageMaker.criteria.amount }'> <input
+		type='hidden' name='type'
 		value='<c:out value="${ pageMaker.criteria.type }"/>'> <input
 		type='hidden' name='keyword'
-		value='<c:out value="${ pageMaker.criteria.keyword }"/>'>
+		value='<c:out value="${ pageMaker.criteria.keyword }"/>'> <input
+		type='hidden' name='bno' />
 </form>
 
 <%@include file="../includes/footer.jsp"%>
@@ -154,6 +156,7 @@
 <script type="text/javascript">
 	$(document).ready(
 			function() {
+
 				var result = '<c:out value="${result}"/>';
 
 				checkModal(result);
@@ -161,105 +164,67 @@
 				history.replaceState({}, null, null);
 
 				function checkModal(result) {
-
 					if (result === '' || history.state) {
 						return;
 					}
 
 					if (parseInt(result) > 0) {
-						$("modal-body").html(
+						$(".modal-body").html(
 								"게시글 " + parseInt(result) + " 번이 등록되었습니다.");
 					}
-
 					$("#myModal").modal("show");
 				}
+
 				$("#regBtn").on("click", function() {
 					self.location = "/board/register";
 				});
-			});
-</script>
 
+				var actionForm = $("#actionForm");
 
-<script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
+				$(".paginate_button a").on(
+						"click",
+						function(e) {
+							e.preventDefault();
+							e.stopPropagation()
 
-						var result = '<c:out value="${result}"/>';
+							console.log('click');
 
-						checkModal(result);
-
-						history.replaceState({}, null, null);
-
-						function checkModal(result) {
-							if (result === '' || history.state) {
-								return;
-							}
-
-							if (parseInt(result) > 0) {
-								$(".modal-body").html(
-										"게시글 " + parseInt(result)
-												+ " 번이 등록되었습니다.");
-							}
-							$("#myModal").modal("show");
-						}
-
-						$("#regBtn").on("click", function() {
-							self.location = "/board/register";
+							actionForm.find("input[name='pageNum']").val(
+									$(this).attr("href"));
+							actionForm.attr("action", "/board/list");
+							actionForm.submit();
 						});
 
-						var actionForm = $("#actionForm");
+				$(".move").on(
+						"click",
+						function(e) {
+							e.preventDefault();
 
-						$(".paginate_button a").on(
-								"click",
-								function(e) {
-									e.preventDefault();
-									console.log('click');
+							var actionForm = $("#actionForm");
 
-									actionForm.find("input[name='pageNum']")
-											.val($(this).attr("href"));
-									actionForm.attr("action",
-									"/board/list");
-									actionForm.submit();
-								});
+							actionForm.find("input[name='bno']").val(
+									$(this).attr("href"));
+							actionForm.attr("action", "/board/get");
+							actionForm.submit();
+						});
 
-						$(".move")
-								.on(
-										"click",
-										function(e) {
-											e.preventDefault();
-											
-											var actionForm = $("#actionForm");
-											
-											actionForm.find("input[name='bno']")
-											.val($(this).attr("href"));
-											actionForm.attr("action",
-													"/board/get");
-											actionForm.submit();
-										});
+				var searchForm = $("#searchForm");
 
-						var searchForm = $("#searchForm");
+				$("#searchForm button").on("click", function(e) {
+					if (!searchForm.find("option:selected").val()) {
+						alert("검색 종류를 선택하세요");
+						return false;
+					}
 
-						$("#searchForm button").on(
-								"click",
-								function(e) {
-									if (!searchForm.find("option:selected")
-											.val()) {
-										alert("검색 종류를 선택하세요");
-										return false;
-									}
+					if (!searchForm.find("input[name='keyword']").val()) {
+						alert("키워드를 입력하세요");
+						return false;
+					}
 
-									if (!searchForm.find(
-											"input[name='keyword']").val()) {
-										alert("키워드를 입력하세요");
-										return false;
-									}
+					searchForm.find("input[name='pageNum']").val("1");
+					e.preventDefault();
 
-									searchForm.find("input[name='pageNum']")
-											.val("1");
-									e.preventDefault();
-
-									searchForm.submit();
-								});
-					});
+					searchForm.submit();
+				});
+			});
 </script>

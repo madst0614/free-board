@@ -8,11 +8,14 @@ import java.util.List;
 import org.freeBoard.domain.BoardAttachVO;
 import org.freeBoard.domain.BoardVO;
 import org.freeBoard.domain.Criteria;
+import org.freeBoard.domain.MenuVO;
 import org.freeBoard.domain.PageDTO;
 import org.freeBoard.service.BoardService;
+import org.freeBoard.service.MenuService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +35,7 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 public class BoardController {
 	private BoardService service;
+	private MenuService menuService;
 
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
@@ -43,13 +47,19 @@ public class BoardController {
 
 		log.info("page total: " + total);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		
+		List<MenuVO> boardList = menuService.getBoardList();
+		log.info("get boardList: " + boardList);
+		model.addAttribute("boardList", boardList);
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/register")
 	public void register() {
 
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 
@@ -73,6 +83,7 @@ public class BoardController {
 		model.addAttribute("board", service.get(bno));
 	}
 
+	@PreAuthorize("principal.username == #board.writer")
 	@PostMapping("/modify")
 	public String modify(BoardVO board, Criteria cri, RedirectAttributes rttr) {
 
@@ -84,6 +95,8 @@ public class BoardController {
 
 		return "redirect:/board/list" + cri.getListLink();
 	}
+	
+	@PreAuthorize("principal.username == #board.writer")
 	@PostMapping("/remove")
 	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
 

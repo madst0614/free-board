@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 
@@ -126,8 +125,13 @@
 								</span>
 							</div> <!-- /input-group -->
 						</li>
-						<li><a href="index.html"><i class="fa fa-dashboard fa-fw"></i>
-								게시판 메뉴 동적 설계</a></li>
+
+						<c:forEach items="${boardList}" var="boardList">
+							<li><a href='<c:out value= "${boardList.mid}"/>'><i
+									class="fa fa-keyboard-o fa-fw"></i> <c:out
+										value="${boardList.name }" /></a></li>
+						</c:forEach>
+
 
 					</ul>
 				</div>

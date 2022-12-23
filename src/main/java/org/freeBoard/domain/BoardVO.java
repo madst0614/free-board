@@ -7,9 +7,6 @@ import lombok.Data;
 
 @Data
 public class BoardVO {
-	
-	// 게시판 종류
-	private Long bType;
 
 	// 게시글 넘버
 	private Long bno;

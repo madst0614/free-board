@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 
 <%@include file="../includes/header.jsp"%>
 
@@ -30,7 +33,8 @@
 						type='hidden' name='type' value='<c:out value="${cri.type }"/>'>
 					<input type='hidden' name='keyword'
 						value='<c:out value="${cri.keyword }"/>'>
-
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token }" />
 					<div class="form-group">
 						<label>게시물 번호</label> <input class="form-control" name='bno'
 							value='<c:out value="${board.bno }"/>' readonly="readonly">
@@ -65,11 +69,14 @@
 							readonly="readonly">
 					</div>
 				</form>
-
-				<button type="submit" data-oper='modify' class="btn btn-default">Modify</button>
-				<button type="submit" data-oper='remove' class="btn btn-danger">Remove</button>
-				<button type="submit" data-oper='list' class="btn btn-info">list</button>
-
+				<sec:authentication property="principal" var="pinfo" />
+				<sec:authorize access="isAuthenticated()">
+					<c:if test="${pinfo.username eq board.writer }">
+						<button type="submit" data-oper='modify' class="btn btn-default">Modify</button>
+						<button type="submit" data-oper='remove' class="btn btn-danger">Remove</button>
+						<button type="submit" data-oper='list' class="btn btn-info">list</button>
+					</c:if>
+				</sec:authorize>
 			</div>
 			<!--  end panel-body -->
 		</div>
@@ -321,7 +328,10 @@
 
 						var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 						var maxSize = 5242880;
-
+						
+						var csrfHeaderName = "${_csrf.headerName}";
+						var csrfTokenValue = "${_csrf.token}";
+						
 						// 첨부파일 추가
 						$("input[type='file']")
 								.change(
@@ -352,6 +362,9 @@
 												contentType : false,
 												data : formData,
 												type : 'POST',
+												beforeSend:function(xhr){
+													xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+												},
 												dataType : 'json',
 												success : function(result) {
 													console.log(result);
