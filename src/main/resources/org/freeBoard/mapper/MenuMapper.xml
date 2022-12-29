@@ -4,8 +4,8 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.freeBoard.mapper.MenuMapper">
 
-	<select id="getBoardList"
-		resultType="org.freeBoard.domain.CatVO">
+	<select id="getList"
+		resultType="java.util.HashMap">
 		select * from tbl_menu
 	</select>
 </mapper>

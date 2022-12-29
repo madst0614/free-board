@@ -1,11 +1,12 @@
 package org.freeBoard.domain;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Data;
 
 @Data
-public class MenuVO {
+public class MenuDTO {
 	
-	List<CatVO> boardList;
+	Map<String, List<CategoryVO>> category;
 }

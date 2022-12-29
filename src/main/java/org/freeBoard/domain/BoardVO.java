@@ -8,7 +8,8 @@ import lombok.Data;
 @Data
 public class BoardVO {
 
-	// 게시글 넘버
+	// 게시판 카테고리
+	private String mid;
 	private Long bno;
 	
 	public String title;

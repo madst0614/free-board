@@ -8,7 +8,7 @@ import java.util.List;
 import org.freeBoard.domain.BoardAttachVO;
 import org.freeBoard.domain.BoardVO;
 import org.freeBoard.domain.Criteria;
-import org.freeBoard.domain.MenuVO;
+import org.freeBoard.domain.MenuDTO;
 import org.freeBoard.domain.PageDTO;
 import org.freeBoard.service.BoardService;
 import org.freeBoard.service.MenuService;
@@ -40,7 +40,7 @@ public class BoardController {
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
 
-		log.info("list criteria" + cri);
+		log.info("list criteria: " + cri);
 		model.addAttribute("list", service.getList(cri));
 
 		int total = service.getTotal(cri);
@@ -48,7 +48,7 @@ public class BoardController {
 		log.info("page total: " + total);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		
-		List<MenuVO> boardList = menuService.getBoardList();
+		List<MenuDTO> boardList = menuService.getBoardList();
 		log.info("get boardList: " + boardList);
 		model.addAttribute("boardList", boardList);
 	}
