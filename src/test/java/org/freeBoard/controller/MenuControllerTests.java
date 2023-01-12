@@ -1,5 +1,8 @@
 package org.freeBoard.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,30 +15,23 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({ "file:src/main/webapp/WEB-INF/spring/root-context.xml",
-		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml" })
-@Log4j2
-public class ReplyControllerTests {
+"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml" })
+public class MenuControllerTests {
 
-	@Setter(onMethod_ = { @Autowired })
+	@Autowired
 	private WebApplicationContext ctx;
-
 	private MockMvc mockMvc;
-
-	@Before
+	
+	@Before()
 	public void setup() {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
-
+		this.mockMvc=MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
+	
 	@Test
-	public void testRemove() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.delete("/replies/remove/27").param("rno", "27"));
-				
+	public void testGetMenu() throws Exception{
+		mockMvc.perform(MockMvcRequestBuilders.get("/getMenu")).andExpect(status().isOk()).andDo(print());
 	}
-
 }

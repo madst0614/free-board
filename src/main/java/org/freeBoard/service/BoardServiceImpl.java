@@ -46,6 +46,7 @@ public class BoardServiceImpl implements BoardService {
 		});
 	}
 
+	@Override
 	public BoardVO get(Long bno) {
 
 		log.info("get......." + bno);
@@ -82,22 +83,24 @@ public class BoardServiceImpl implements BoardService {
 
 		return mapper.delete(bno) == 1;
 	}
-
+	
+	@Override
 	public int getTotal(Criteria cri) {
 		log.info("get total count");
 
 		return mapper.getTotalCount(cri);
 	}
 
+	@Override
 	public List<BoardVO> getList(Criteria cri) {
 		log.info("get List with Criteria " + cri);
 
 		return mapper.getListWithPaging(cri);
 	}
-
+	
 	@Override
 	public List<BoardAttachVO> getAttachList(Long bno) {
-		// TODO Auto-generated method stub
 		return attachMapper.findByBno(bno);
 	}
+	
 }

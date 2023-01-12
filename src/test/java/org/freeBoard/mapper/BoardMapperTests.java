@@ -1,6 +1,9 @@
 package org.freeBoard.mapper;
 
+import java.util.List;
+
 import org.freeBoard.domain.BoardVO;
+import org.freeBoard.domain.Criteria;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +21,33 @@ public class BoardMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
 
+//	@Test
+//	public void testInsert() {
+//		BoardVO board = new BoardVO();
+//		board.setTitle("테스트");
+//		board.setContent("됩니까?");
+//		board.setWriter("되나?");
+//
+//		mapper.insertSelectKey(board);
+//
+//		log.info(board);
+//	}
+	
 	@Test
-	public void testInsert() {
-		BoardVO board = new BoardVO();
-		board.setTitle("테스트");
-		board.setContent("됩니까?");
-		board.setWriter("되나?");
-
-		mapper.insertSelectKey(board);
-
-		log.info(board);
-	}
+	public void testPaging() {
+		Criteria cri = new Criteria();
+		
+		// 10개씩 3페이지
+		cri.setPageNum(1);
+		cri.setAmount(10);
+		cri.setMid("free");
+		
+		log.info("testPaging");
+		
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		
+		list.forEach(board -> log.info(board));
+	}	
 	
 	/*@Test
 	public void testInsert() {

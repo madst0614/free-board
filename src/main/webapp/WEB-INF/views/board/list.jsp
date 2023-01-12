@@ -7,7 +7,7 @@
 <%@include file="../includes/header.jsp"%>
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">자유 게시판</h1>
+		<h1 class="page-header"><c:out value="${name } 게시판"/></h1>
 	</div>
 	<!-- /.col-lg-12 -->
 </div>
@@ -141,6 +141,9 @@
 <!-- /.row -->
 
 <form id='actionForm' action="/board/list" method='get'>
+<input
+		type='hidden' name='mid'
+		value='<c:out value="${ pageMaker.criteria.mid }"/>'>
 	<input type='hidden' name='pageNum'
 		value='${pageMaker.criteria.pageNum }'> <input type='hidden'
 		name='amount' value='${pageMaker.criteria.amount }'> <input
@@ -149,6 +152,7 @@
 		type='hidden' name='keyword'
 		value='<c:out value="${ pageMaker.criteria.keyword }"/>'> <input
 		type='hidden' name='bno' />
+		
 </form>
 
 <%@include file="../includes/footer.jsp"%>
@@ -191,7 +195,7 @@
 
 							actionForm.find("input[name='pageNum']").val(
 									$(this).attr("href"));
-							actionForm.attr("action", "/board/list");
+							actionForm.attr("action", '/board/<c:out value="${pageMaker.criteria.mid}"/>');
 							actionForm.submit();
 						});
 

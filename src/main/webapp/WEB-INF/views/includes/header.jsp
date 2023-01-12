@@ -76,19 +76,6 @@
 
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i class="fa fa-bell fa-fw"></i>
-						<i class="fa fa-caret-down"></i>
-				</a>
-					<ul class="dropdown-menu dropdown-alerts">
-						<li><a href="#">
-								<div>
-									<i class="fa fa-comment fa-fw"></i> New Comment <span
-										class="pull-right text-muted small">4 minutes ago</span>
-								</div>
-						</a></li>
-					</ul> <!-- /.dropdown-alerts --></li>
-				<!-- /.dropdown -->
-				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
 						<i class="fa fa-caret-down"></i>
 				</a>
@@ -115,21 +102,18 @@
 			<div class="navbar-default sidebar" role="navigation">
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
-						<li class="sidebar-search">
-							<div class="input-group custom-search-form">
-								<input type="text" class="form-control" placeholder="Search...">
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="button">
-										<i class="fa fa-search"></i>
-									</button>
-								</span>
-							</div> <!-- /input-group -->
-						</li>
+						<c:forEach items="${menu.root.children}" var="category">
+							<li><a href="./"><i class="fa fa-table fa-fw"></i>
+								<c:out value="${category.name }" /><span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level">
+									<c:forEach items="${category.children }" var="board">
+										<li><a href="/board/<c:out value="${board.mid}"/>">
+												<i class="fa fa-keyboard-o fa-fw">></i> <c:out
+													value="${board.name }" />
+										</a></li>
 
-						<c:forEach items="${boardList}" var="boardList">
-							<li><a href='<c:out value= "${boardList.mid}"/>'><i
-									class="fa fa-keyboard-o fa-fw"></i> <c:out
-										value="${boardList.name }" /></a></li>
+									</c:forEach>
+								</ul></li>
 						</c:forEach>
 
 

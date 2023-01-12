@@ -21,7 +21,11 @@
 			<div class="panel-heading">Board List Page</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
-
+				<div class="form-group">
+					<label>게시판 종류</label> <input class="form-control" name='mid'
+						value='<c:out value="${board.mid }"/>' readonly="readonly">
+				</div>
+				
 				<div class="form-group">
 					<label>Bno</label> <input class="form-control" name='bno'
 						value='<c:out value="${board.bno }"/>' readonly="readonly">
@@ -609,7 +613,7 @@
 
 		$("button[data-oper='list']").on("click", function(e) {
 			operForm.find("#bno").remove();
-			operForm.attr("action", "/board/list")
+			operForm.attr("action", "/board/<c:out value="${ board.mid }"/>");
 			operForm.submit();
 		});
 

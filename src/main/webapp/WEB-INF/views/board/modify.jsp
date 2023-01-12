@@ -32,9 +32,15 @@
 						value='<c:out value="${cri.amount }"/>'> <input
 						type='hidden' name='type' value='<c:out value="${cri.type }"/>'>
 					<input type='hidden' name='keyword'
-						value='<c:out value="${cri.keyword }"/>'>
-					<input type="hidden" name="${_csrf.parameterName}"
+						value='<c:out value="${cri.keyword }"/>'> <input
+						type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token }" />
+
+					<div class="form-group">
+					<label>게시판 종류</label> <input class="form-control" name='mid'
+						value='<c:out value="${board.mid }"/>' readonly="readonly">
+					</div>
+					
 					<div class="form-group">
 						<label>게시물 번호</label> <input class="form-control" name='bno'
 							value='<c:out value="${board.bno }"/>' readonly="readonly">
@@ -187,7 +193,7 @@
 															"/board/remove");
 												} else if (operation === 'list') {
 													formObj.attr("action",
-															"/board/list")
+															"/board/<c:out value="${ board.mid }"/>")
 															.attr("method",
 																	"get");
 													var pageNumTag = $(
